@@ -10,11 +10,11 @@ def init():
 	#os.system("echo 95 > /sys/class/gpio/export") 			#pin Servo PC31
 	#os.system("echo out > /sys/class/gpio/pioC31/direction")	#pin Servo PC31
 	#os.system("echo 1 > /sys/class/gpio/pioC31/value")		#pin Servo PC31
-	os.system("echo 0 > /sys/class/pwm/pwmchip0/export")		#pwm Servo
-	os.system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/period") #pwm Servo
-	os.system("echo 1 > /sys/class/pwm/pwmchip0/export") 		#pwm Motor
-	os.system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm1/period") #pwm Motor
-	os.system("echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable")       #pwm Motor enable
+	os.system("echo 0 > /sys/class/pwm/pwmchip0/export")		#pwm0 Servo
+	os.system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/period") #pwm0 Servo
+	os.system("echo 1 > /sys/class/pwm/pwmchip0/export") 		#pwm1 Motor
+	os.system("echo 1000000 > /sys/class/pwm/pwmchip0/pwm1/period") #pwm1 Motor
+	os.system("echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable")       #pwm1 Motor enable
 
 def motor(speed,deadzone):
 	if speed > deadzone:
@@ -34,13 +34,13 @@ def motor(speed,deadzone):
 		os.system("echo 0 > /sys/class/gpio/pioB14/value")
 
 def steer(natpos,deadzone):
-	#pos = natpos+32768
-	#stdscr.addstr(8,15,str(int(pos/32768.0*500000)))
-	#os.system("echo "+str(pos)+" /sys/class/pwm/pwmchip0/pwm0/duty_cycle")
-	#if (pos > deadzone) or (pos < deadzone*-1):
-	#	os.system("echo "+str(int(pos/32768.0*500000))+" > /sys/class/pwm/pwmchip0/pwm0/duty_cycle")
-	#else:
-	#	os.system("echo 500000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle")
+	pos = natpos+32768
+	stdscr.addstr(8,15,str(int(pos/32768.0*500000)))
+	os.system("echo "+str(pos)+" /sys/class/pwm/pwmchip0/pwm0/duty_cycle")
+	if (pos > deadzone) or (pos < deadzone*-1):
+		os.system("echo "+str(int(pos/32768.0*500000))+" > /sys/class/pwm/pwmchip0/pwm0/duty_cycle")
+	else:
+		os.system("echo 500000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle")
 
 if __name__ == "__main__":
 	import curses
